@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellar Vanguard: Infinite Space</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Sci-Fi Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #030114;
+            color: #f4f4f9;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .heading-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+        /* Premium Neon Tech Styling */
+        .neon-border-blue {
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.65);
+            border: 1px solid rgba(147, 197, 253, 0.9);
+        }
+        .neon-border-purple {
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.65);
+            border: 1px solid rgba(216, 180, 254, 0.9);
+        }
+        .neon-border-green {
+            box-shadow: 0 0 25px rgba(34, 197, 94, 0.65);
+            border: 1px solid rgba(187, 247, 208, 0.9);
+        }
+        .neon-border-amber {
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.65);
+            border: 1px solid rgba(253, 230, 138, 0.9);
+        }
+        .neon-border-emerald {
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.65);
+            border: 1px solid rgba(167, 243, 208, 0.9);
+        }
+        .neon-text-cyan {
+            text-shadow: 0 0 12px rgba(34, 211, 238, 0.85), 0 0 2px rgba(255, 255, 255, 0.9);
+        }
+        .neon-text-purple {
+            text-shadow: 0 0 12px rgba(168, 85, 247, 0.85);
+        }
+        .neon-text-amber {
+            text-shadow: 0 0 12px rgba(245, 158, 11, 0.85);
+        }
+        .glass-panel {
+            background: rgba(15, 15, 35, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(168, 85, 247, 0.3);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(168, 85, 247, 0.5);
+        }
+    </style>
+</head>
+<body class="h-full flex items-center justify-center relative select-none">
+
+    <!-- Cloud Sync Status Indicator -->
+    <div id="syncStatus" class="absolute top-4 right-4 z-50 flex items-center gap-2 bg-black/80 px-4 py-2 rounded-full border border-slate-700 text-xs text-slate-300 shadow-lg">
+        <span class="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse" id="syncDot"></span>
+        <span id="syncText">Connecting Core Sync...</span>
+    </div>
+
+    <!-- MAIN MENU SCREEN -->
+    <div id="mainMenu" class="absolute inset-0 flex flex-col items-center justify-center z-40 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 via-indigo-950 to-slate-950 px-4">
+        <!-- Brighter high-opacity overlay backlights -->
+        <div class="absolute inset-0 opacity-40 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan-900/60 via-purple-900/30 to-black"></div>
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+        
+        <div class="z-10 text-center max-w-lg w-full">
+            <h1 class="heading-font text-5xl md:text-6xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-purple-300 to-indigo-400 mb-2 animate-pulse uppercase filter drop-shadow-[0_0_15px_rgba(34,211,238,0.4)]">
+                Stellar Vanguard
+            </h1>
+            <p class="text-cyan-300 text-xs md:text-sm tracking-widest uppercase mb-6 heading-font neon-text-cyan font-bold">Tactical Interstellar Defense</p>
+
+            <!-- Unique Pilot ID Creation Panel -->
+            <div class="glass-panel rounded-2xl p-4 mb-5 flex flex-col gap-2.5 border border-cyan-500/30">
+                <div class="flex items-center justify-between text-[11px] uppercase tracking-wider font-bold text-cyan-300">
+                    <span><i class="fa-solid fa-id-card mr-1"></i> Unique Pilot Call Sign</span>
+                    <span id="idSyncBadge" class="text-amber-400">Not Registered</span>
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" id="pilotIdInput" class="bg-black/60 border border-slate-700 rounded-xl px-4 py-2 flex-1 text-sm text-cyan-200 heading-font tracking-wide focus:outline-none focus:border-cyan-400 transition" placeholder="ENTER UNIQUE ID...">
+                    <button id="registerPilotBtn" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black px-4 py-2 rounded-xl text-xs uppercase heading-font transition active:scale-95 shadow-md">
+                        Sync ID
+                    </button>
+                </div>
+                <p class="text-[10px] text-slate-400 text-left leading-normal">
+                    * Type a unique call sign and click Sync. Profile sync rate is hyper-accelerated with background cloud buffering!
+                </p>
+            </div>
+
+            <!-- Play Controls -->
+            <div class="flex flex-col gap-4 mb-6">
+                <button id="launchBtn" class="heading-font bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-black py-4 px-8 rounded-xl shadow-2xl transform active:scale-95 transition-all duration-200 text-xl tracking-wider neon-border-blue">
+                    LAUNCH INTERCEPTOR
+                </button>
+                <div class="grid grid-cols-2 gap-4">
+                    <button id="workshopBtn" class="heading-font bg-slate-900/90 hover:bg-slate-800 text-cyan-300 border border-cyan-400/50 py-3 px-4 rounded-xl transform active:scale-95 transition text-sm flex items-center justify-center gap-2 font-bold shadow-md shadow-cyan-900/20">
+                        <i class="fa-solid fa-screwdriver-wrench text-cyan-300"></i> TECH WORKSHOP
+                    </button>
+                    <button id="hangarBtn" class="heading-font bg-slate-900/90 hover:bg-slate-800 text-purple-300 border border-purple-400/50 py-3 px-4 rounded-xl transform active:scale-95 transition text-sm flex items-center justify-center gap-2 font-bold shadow-md shadow-purple-900/20">
+                        <i class="fa-solid fa-shuttle-space text-purple-300"></i> HANGAR BAY
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Panel -->
+            <div class="glass-panel rounded-2xl p-5 text-left grid grid-cols-2 gap-4 mb-6 text-sm">
+                <div>
+                    <span class="text-slate-400 block uppercase text-[10px] tracking-widest font-bold">Command Rating</span>
+                    <span id="statsPilot" class="text-cyan-300 font-bold heading-font text-base neon-text-cyan">Recruit Pilot</span>
+                </div>
+                <div>
+                    <span class="text-slate-400 block uppercase text-[10px] tracking-widest font-bold">Nano Credits</span>
+                    <span id="statsCoins" class="text-amber-300 font-bold heading-font text-base"><i class="fa-solid fa-coins mr-1 text-amber-400"></i>0</span>
+                </div>
+                <div>
+                    <span class="text-slate-400 block uppercase text-[10px] tracking-widest font-bold">Highest Wave</span>
+                    <span id="statsWave" class="text-purple-300 font-bold heading-font text-base neon-text-purple">Wave 1</span>
+                </div>
+                <div>
+                    <span class="text-slate-400 block uppercase text-[10px] tracking-widest font-bold">High Score</span>
+                    <span id="statsScore" class="text-emerald-300 font-bold heading-font text-base">0</span>
+                </div>
+            </div>
+
+            <div class="text-xs text-slate-400 font-medium">
+                Control using <kbd class="px-2 py-1 bg-slate-800 rounded border border-slate-700 text-slate-200">A</kbd>/<kbd class="px-2 py-1 bg-slate-800 rounded border border-slate-700 text-slate-200">D</kbd> or <kbd class="px-2 py-1 bg-slate-800 rounded border border-slate-700 text-slate-200">←</kbd>/<kbd class="px-2 py-1 bg-slate-800 rounded border border-slate-700 text-slate-200">→</kbd>. Drag/touch on mobile devices.
+            </div>
+        </div>
+    </div>
+
+    <!-- WORKSHOP MODAL OVERLAY -->
+    <div id="workshopModal" class="hidden absolute inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+        <div class="max-w-2xl w-full bg-slate-950 border border-cyan-500/30 rounded-3xl p-6 flex flex-col h-[85vh] shadow-2xl">
+            <div class="flex justify-between items-center pb-4 border-b border-slate-800">
+                <div>
+                    <h2 class="heading-font text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400"><i class="fa-solid fa-screwdriver-wrench mr-2 text-cyan-400"></i>ENGINEERING BAY</h2>
+                    <p class="text-xs text-slate-400 tracking-wider uppercase">UPGRADE SHIELDS, PLATING AND LASER OUTLET CONFIGURATIONS</p>
+                </div>
+                <button id="closeWorkshopBtn" class="text-slate-400 hover:text-white text-2xl p-1 transition"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="my-4 bg-slate-900/60 border border-slate-800 p-4 rounded-2xl flex justify-between items-center">
+                <span class="text-slate-400 text-sm tracking-wider uppercase">Available Nano Credits</span>
+                <span id="workshopCoins" class="text-amber-400 font-bold text-xl heading-font"><i class="fa-solid fa-coins mr-1.5"></i>0</span>
+            </div>
+
+            <div class="flex-1 overflow-y-auto space-y-4 pr-1">
+                <div id="upgradesContainer" class="space-y-4">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800 flex justify-end">
+                <button id="confirmWorkshopBtn" class="heading-font bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-bold py-3 px-6 rounded-xl transition-all duration-150 transform active:scale-95">
+                    CONFIRM MODIFICATIONS
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GARAGE MODAL OVERLAY -->
+    <div id="garageModal" class="hidden absolute inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+        <div class="max-w-4xl w-full bg-slate-950 border border-purple-500/30 rounded-3xl p-6 flex flex-col h-[85vh] shadow-2xl">
+            <div class="flex justify-between items-center pb-4 border-b border-slate-800">
+                <div>
+                    <h2 class="heading-font text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400"><i class="fa-solid fa-shuttle-space mr-2 text-purple-400"></i>HANGAR DECK</h2>
+                    <p class="text-xs text-slate-400 tracking-wider uppercase">SELECT OR ACQUIRE ELITE CLASS COMMAND SHIP MODELS</p>
+                </div>
+                <button id="closeGarageBtn" class="text-slate-400 hover:text-white text-2xl p-1 transition"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="my-4 bg-slate-900/60 border border-slate-800 p-4 rounded-2xl flex justify-between items-center">
+                <span class="text-slate-400 text-sm tracking-wider uppercase">Available Nano Credits</span>
+                <span id="garageCoins" class="text-amber-400 font-bold text-xl heading-font"><i class="fa-solid fa-coins mr-1.5"></i>0</span>
+            </div>
+
+            <div class="flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-4 pr-1" id="shipsContainer">
+                <!-- Loaded dynamically -->
+            </div>
+
+            <div class="pt-4 border-t border-slate-800 flex justify-end">
+                <button id="confirmGarageBtn" class="heading-font bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3 px-6 rounded-xl transition-all duration-150 transform active:scale-95">
+                    PREPARE LAUNCH
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- IN-GAME HUD & PLAYGROUND CONTAINER -->
+    <div id="gameContainer" class="relative hidden w-full h-full max-w-[500px] max-h-[900px] overflow-hidden bg-black rounded-none md:rounded-3xl border border-slate-850 shadow-2xl flex flex-col">
+        <!-- Interactive Game Canvas -->
+        <canvas id="gameCanvas" class="w-full flex-1 block cursor-crosshair"></canvas>
+
+        <!-- Premium HUD Interface Overlay -->
+        <div class="absolute inset-x-0 top-0 p-4 pointer-events-none flex flex-col gap-2">
+            <!-- Stats -->
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="bg-black/80 backdrop-blur-md border border-slate-800/80 px-3 py-1 rounded-xl">
+                        <span class="text-slate-400 text-[9px] block uppercase tracking-wider font-bold">Score</span>
+                        <span id="hudScore" class="text-emerald-400 font-bold heading-font text-sm">0</span>
+                    </div>
+                    <div class="bg-black/80 backdrop-blur-md border border-slate-800/80 px-3 py-1 rounded-xl">
+                        <span class="text-slate-400 text-[9px] block uppercase tracking-wider font-bold">Credits</span>
+                        <span id="hudCoins" class="text-amber-400 font-bold heading-font text-sm"><i class="fa-solid fa-coins mr-1 text-[10px]"></i>0</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="bg-purple-950/60 backdrop-blur-md border border-purple-500/40 px-3 py-1 rounded-xl text-right">
+                        <span class="text-purple-300 font-bold heading-font text-xs tracking-wider" id="hudWave">WAVE 1</span>
+                    </div>
+                    <button id="pauseGameBtn" class="pointer-events-auto bg-slate-900/90 hover:bg-slate-800 text-white p-2 rounded-xl border border-slate-700/50 text-xs transition duration-150 transform active:scale-90">
+                        <i class="fa-solid fa-pause" id="pauseIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Health & Shields UI Panels -->
+            <div class="w-full grid grid-cols-2 gap-3 mt-1.5">
+                <div>
+                    <div class="flex justify-between text-[9px] text-rose-400 mb-0.5 font-bold uppercase tracking-wider">
+                        <span><i class="fa-solid fa-heart mr-1 text-rose-500"></i>HULL PLATINGS</span>
+                        <span id="healthText">100/100</span>
+                    </div>
+                    <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-850">
+                        <div id="healthBar" class="bg-gradient-to-r from-red-600 via-rose-500 to-rose-400 h-full transition-all duration-100" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-[9px] text-cyan-400 mb-0.5 font-bold uppercase tracking-wider">
+                        <span><i class="fa-solid fa-shield-halved mr-1 text-cyan-400"></i>DEFLECTORS</span>
+                        <span id="shieldText">50/50</span>
+                    </div>
+                    <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-850">
+                        <div id="shieldBar" class="bg-gradient-to-r from-cyan-600 via-cyan-400 to-blue-500 h-full transition-all duration-100" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Boss Status Panel -->
+            <div id="bossHealthContainer" class="w-full mt-3 bg-black/90 p-3 rounded-2xl border border-red-500/30 hidden shadow-xl animate-bounce">
+                <div class="flex justify-between text-xs font-black text-red-500 mb-1.5 tracking-widest heading-font">
+                    <span id="bossName">MEGA BOSS INVADER</span>
+                    <span id="bossHealthText">1500 / 1500</span>
+                </div>
+                <div class="w-full bg-red-950/40 h-2.5 rounded-full overflow-hidden border border-red-700/30">
+                    <div id="bossHealthBar" class="bg-gradient-to-r from-red-600 via-orange-500 to-red-600 h-full transition-all duration-75" style="width: 100%"></div>
+                </div>
+            </div>
+            
+            <!-- Power-up Alerts -->
+            <div id="powerupContainer" class="flex flex-col gap-1.5 mt-2 max-w-[220px]">
+                <!-- Power-ups indicators load here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- PLAY OVERLAYS (PAUSE & RESULTS) -->
+    <div id="gameOverlay" class="hidden absolute inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+        <div class="max-w-md w-full bg-slate-950 border border-slate-800 rounded-3xl p-8 text-center shadow-2xl">
+            <h2 id="overlayTitle" class="heading-font text-4xl font-black mb-4 tracking-widest text-red-500">TACTICAL FAILURE</h2>
+            <p id="overlayDesc" class="text-slate-400 mb-8">Your ship's hull collapsed in outer space.</p>
+
+            <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-5 mb-8 space-y-3 text-left">
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Maneuver Score:</span>
+                    <span id="overlayScore" class="font-bold text-emerald-400 heading-font text-lg">0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Harvested Credits:</span>
+                    <span id="overlayCoins" class="font-bold text-amber-400 heading-font text-lg">+0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Maximum Wave Achieved:</span>
+                    <span id="overlayWave" class="font-bold text-purple-400 heading-font text-lg">Wave 1</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button id="overlayPrimaryBtn" class="heading-font bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-3.5 px-6 rounded-xl transition duration-150 transform active:scale-95 shadow-lg">
+                    RE-DEPLOY TO AREA
+                </button>
+                <button id="exitToMenuBtn" class="heading-font bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 font-bold py-3 px-6 rounded-xl transition duration-150 transform active:scale-95">
+                    RETURN TO HEADQUARTERS
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern Modular Firebase Core + Firestore Implementation -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Web App Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJ_Txpi_ZNALrt8ZLqaSwSmh1xZx5hr3w",
+            authDomain: "social-edbf2.firebaseapp.com",
+            projectId: "social-edbf2",
+            storageBucket: "social-edbf2.firebasestorage.app",
+            messagingSenderId: "160667254989",
+            appId: "1:160667254989:web:726efc15d6aad3057a6984",
+            measurementId: "G-YQ6SG3HGBL"
+        };
+
+        // Initialize App & Services
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appIdGlobal = typeof __app_id !== 'undefined' ? __app_id : 'stellar-vanguard';
+
+        let user = null;
+        let activePilotId = "";
+        let isSyncing = false;
+        let pendingSaveTimeout = null;
+
+        // Sound System
+        const SFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            playLaser() {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(850, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.12);
+                gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.12);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.12);
+            },
+            playExplode() {
+                this.init();
+                if (!this.ctx) return;
+                const bufferSize = this.ctx.sampleRate * 0.3;
+                const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = this.ctx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(500, this.ctx.currentTime);
+                filter.frequency.exponentialRampToValueAtTime(60, this.ctx.currentTime + 0.25);
+                const gain = this.ctx.createGain();
+                gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.ctx.destination);
+                noise.start();
+                noise.stop(this.ctx.currentTime + 0.3);
+            },
+            playPowerup() {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.setValueAtTime(600, now + 0.08);
+                osc.frequency.setValueAtTime(800, now + 0.16);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
+                osc.start();
+                osc.stop(now + 0.22);
+            },
+            playCoin() {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.frequency.setValueAtTime(987.77, now); // B5
+                osc.frequency.setValueAtTime(1318.51, now + 0.07); // E6
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.005, now + 0.15);
+                osc.start();
+                osc.stop(now + 0.15);
+            },
+            playHit() {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(140, this.ctx.currentTime);
+                osc.frequency.setValueAtTime(40, this.ctx.currentTime + 0.06);
+                gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.06);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.06);
+            },
+            playSiren() {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.frequency.setValueAtTime(320, now);
+                osc.frequency.linearRampToValueAtTime(480, now + 0.35);
+                osc.frequency.linearRampToValueAtTime(320, now + 0.7);
+                gain.gain.setValueAtTime(0.04, now);
+                gain.gain.linearRampToValueAtTime(0.04, now + 0.5);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.7);
+                osc.start();
+                osc.stop(now + 0.7);
+            }
+        };
+
+        // Unique ID Setup
+        function setupUniquePilotID() {
+            let savedId = localStorage.getItem('vanguard_pilot_callsign');
+            if (!savedId) {
+                const prefixes = ["ALPHA", "CADET", "STRIKER", "SPECTRE", "ORION", "APEX", "COSMO"];
+                const randPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+                const randNum = Math.floor(1000 + Math.random() * 9000);
+                savedId = `${randPrefix}-${randNum}`;
+                localStorage.setItem('vanguard_pilot_callsign', savedId);
+            }
+            activePilotId = savedId;
+            document.getElementById('pilotIdInput').value = activePilotId;
+        }
+
+        // Config & Initialization Flow
+        window.addEventListener('DOMContentLoaded', async () => {
+            setupUniquePilotID();
+            updateMenuUI();
+            updateSyncIndicator('yellow', 'Authenticating Core...');
+            
+            try {
+                // Rule 3 Auth Priority Check
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, async (currentUser) => {
+                    if (currentUser) {
+                        user = currentUser;
+                        updateSyncIndicator('green', 'Sync System Online');
+                        await loadCloudData();
+                    } else {
+                        user = null;
+                        updateSyncIndicator('gray', 'Offline / Local Backups');
+                    }
+                });
+            } catch (e) {
+                console.warn("Could not synchronize authentication online: ", e);
+                updateSyncIndicator('red', 'Local Engine Active');
+                loadLocalDataFallback();
+            }
+        });
+
+        function updateSyncIndicator(color, text) {
+            const dot = document.getElementById('syncDot');
+            const textEl = document.getElementById('syncText');
+            if (dot && textEl) {
+                textEl.innerText = text;
+                dot.className = "w-2.5 h-2.5 rounded-full animate-pulse";
+                if (color === 'green') dot.classList.add('bg-emerald-500');
+                else if (color === 'yellow') dot.classList.add('bg-amber-500');
+                else if (color === 'red') dot.classList.add('bg-red-500');
+                else dot.classList.add('bg-slate-500');
+            }
+        }
+
+        // Rule 1 Strict Path Cloud Saving using pilot callsign unique key as the userId folder
+        async function loadCloudData() {
+            if (!user || !db) return;
+            const cleanId = activePilotId.replace(/[^a-zA-Z0-9-_]/g, "VANGUARD");
+            updateSyncIndicator('yellow', `Synchronizing profile [${cleanId}]`);
+            try {
+                const docRef = doc(db, 'artifacts', appIdGlobal, 'users', cleanId, 'saveState', 'game');
+                const snap = await getDoc(docRef);
+                if (snap.exists()) {
+                    const data = snap.data();
+                    gameState.highScore = data.highScore || 0;
+                    gameState.coins = data.coins || 0;
+                    gameState.currentWave = data.currentWave || 1;
+                    gameState.unlockedShips = data.unlockedShips || ['standard'];
+                    gameState.activeShip = data.activeShip || 'standard';
+                    if (data.upgrades) {
+                        gameState.upgrades = { ...gameState.upgrades, ...data.upgrades };
+                    }
+                    document.getElementById('idSyncBadge').innerText = "Call Sign Synced";
+                    document.getElementById('idSyncBadge').className = "text-emerald-400 font-bold";
+                } else {
+                    document.getElementById('idSyncBadge').innerText = "Registered New";
+                    document.getElementById('idSyncBadge').className = "text-cyan-300";
+                }
+                updateMenuUI();
+                updateSyncIndicator('green', 'Sync Rate Peak Optimized');
+            } catch (error) {
+                console.error("Error loading cloud profile:", error);
+                loadLocalDataFallback();
+            }
+        }
+
+        // Fast Asynchronous Background Buffer Saving for Optimistic UI Response Speed
+        async function saveGameData() {
+            saveLocalDataFallback();
+            if (!user || !db) return;
+
+            // Debounce firestore save to aggregate updates (speeds up profile responsiveness significantly)
+            if (pendingSaveTimeout) clearTimeout(pendingSaveTimeout);
+            
+            document.getElementById('idSyncBadge').innerText = "Buffering Cloud...";
+            document.getElementById('idSyncBadge').className = "text-amber-400 animate-pulse font-bold";
+
+            pendingSaveTimeout = setTimeout(async () => {
+                const cleanId = activePilotId.replace(/[^a-zA-Z0-9-_]/g, "VANGUARD");
+                try {
+                    const docRef = doc(db, 'artifacts', appIdGlobal, 'users', cleanId, 'saveState', 'game');
+                    await setDoc(docRef, {
+                        highScore: gameState.highScore,
+                        coins: gameState.coins,
+                        currentWave: gameState.currentWave,
+                        unlockedShips: gameState.unlockedShips,
+                        activeShip: gameState.activeShip,
+                        upgrades: gameState.upgrades
+                    }, { merge: true });
+                    
+                    document.getElementById('idSyncBadge').innerText = "Synched Instant";
+                    document.getElementById('idSyncBadge').className = "text-emerald-400 font-bold";
+                    updateSyncIndicator('green', 'Fast Cloud Save Complete');
+                } catch (error) {
+                    console.error("Cloud synchronization deferred:", error);
+                    document.getElementById('idSyncBadge').innerText = "Offline Buffer Saved";
+                }
+            }, 150); // Hyper-fast 150ms buffer threshold
+        }
+
+        function saveLocalDataFallback() {
+            try {
+                localStorage.setItem(`vanguard_save_${activePilotId}`, JSON.stringify(gameState));
+            } catch(e) {}
+        }
+
+        function loadLocalDataFallback() {
+            try {
+                const stored = localStorage.getItem(`vanguard_save_${activePilotId}`);
+                if (stored) {
+                    gameState = JSON.parse(stored);
+                    updateMenuUI();
+                }
+            } catch(e) {}
+        }
+
+        // Ship Models Templates
+        const SHIP_TEMPLATES = {
+            standard: {
+                id: 'standard',
+                name: 'Vanguard Alpha',
+                price: 0,
+                color: '#38bdf8', // Cyan
+                exhaustColor: '#0ea5e9',
+                hullMultiplier: 1.0,
+                shieldMultiplier: 1.0,
+                weaponType: 'single',
+                description: 'Swift defense fighter. Exceptional engine dynamics.',
+                icon: 'fa-rocket'
+            },
+            phoenix: {
+                id: 'phoenix',
+                name: 'Phoenix Striker',
+                price: 800,
+                color: '#ef4444', // Red
+                exhaustColor: '#dc2626',
+                hullMultiplier: 1.3,
+                shieldMultiplier: 1.2,
+                weaponType: 'dual',
+                description: 'Dual engine interceptor with twin plasma beams.',
+                icon: 'fa-fire'
+            },
+            sentinel: {
+                id: 'sentinel',
+                name: 'Aegis Sentinel',
+                price: 1800,
+                color: '#10b981', // Emerald
+                exhaustColor: '#059669',
+                hullMultiplier: 1.8,
+                shieldMultiplier: 2.0,
+                weaponType: 'dual-spread',
+                description: 'Reinforced alloy chassis utilizing expanded force protection shields.',
+                icon: 'fa-shield-halved'
+            },
+            dreadnought: {
+                id: 'dreadnought',
+                name: 'Hyperion Dreadnought',
+                price: 3500,
+                color: '#a855f7', // Purple
+                exhaustColor: '#7e22ce',
+                hullMultiplier: 2.5,
+                shieldMultiplier: 2.5,
+                weaponType: 'trishoot',
+                description: 'Heavy assault starship firing triple-spread laser charges.',
+                icon: 'fa-crown'
+            },
+            valkyrie: {
+                id: 'valkyrie',
+                name: 'Valkyrie Interceptor',
+                price: 5500,
+                color: '#f59e0b', // Amber/Yellow
+                exhaustColor: '#ea580c',
+                hullMultiplier: 2.8,
+                shieldMultiplier: 3.0,
+                weaponType: 'dual-spread',
+                description: 'Gold-alloy plated scout vessel featuring hyperdrive booster chambers.',
+                icon: 'fa-bolt'
+            },
+            eclipse: {
+                id: 'eclipse',
+                name: 'Eclipse Singularity',
+                price: 8000,
+                color: '#10b981', // Neon Mint
+                exhaustColor: '#059669',
+                hullMultiplier: 4.0,
+                shieldMultiplier: 4.0,
+                weaponType: 'quadshoot',
+                description: 'The ultimate space fortress. Features pitch-black armor and high-density emerald void beams.',
+                icon: 'fa-circle-radiation'
+            }
+        };
+
+        const UPGRADE_SPECS = {
+            laserSpeed: { key: 'laserSpeed', label: 'Cooling Exchangers', desc: 'Accelerates laser recharging fire rate', basePrice: 150, priceMult: 1.5, maxLevel: 5 },
+            laserDamage: { key: 'laserDamage', label: 'Laser Amplifiers', desc: 'Elevates damage values per strike', basePrice: 200, priceMult: 1.6, maxLevel: 5 },
+            laserSize: { key: 'laserSize', label: 'Focal Stabilizer', desc: 'Increases width and focal radius of projectiles', basePrice: 100, priceMult: 1.4, maxLevel: 5 },
+            shieldCapacity: { key: 'shieldCapacity', label: 'Deflector Relays', desc: 'Expands deflector energy capacities', basePrice: 120, priceMult: 1.5, maxLevel: 5 },
+            healthCapacity: { key: 'healthCapacity', label: 'Nano-Plates', desc: 'Fortifies maximum ship chassis health pool', basePrice: 150, priceMult: 1.5, maxLevel: 5 },
+            shieldRecharge: { key: 'shieldRecharge', label: 'Plasma Rechargers', desc: 'Speeds up the shield deflector passive regeneration rate', basePrice: 250, priceMult: 1.6, maxLevel: 5 },
+            magnetStrength: { key: 'magnetStrength', label: 'Credit Harvester Magnet', desc: 'Pulls dropped Nano-Credits toward your ship using gravity fields', basePrice: 300, priceMult: 1.7, maxLevel: 5 },
+            laserPorts: { key: 'laserPorts', label: 'Quantum Emission Outlets (Panels)', desc: 'ULTIMATE UPGRADE: Installs side-emitter outlet panels to multiply active fire streams!', basePrice: 1000, priceMult: 2.2, maxLevel: 4 }
+        };
+
+        let gameState = {
+            highScore: 0,
+            coins: 0,
+            currentWave: 1,
+            unlockedShips: ['standard'],
+            activeShip: 'standard',
+            upgrades: {
+                laserSpeed: 1,
+                laserDamage: 1,
+                laserSize: 1,
+                shieldCapacity: 1,
+                healthCapacity: 1,
+                shieldRecharge: 1,
+                magnetStrength: 1,
+                laserPorts: 1
+            }
+        };
+
+        function updateMenuUI() {
+            document.getElementById('statsCoins').innerHTML = `<i class="fa-solid fa-coins mr-1"></i>${gameState.coins}`;
+            document.getElementById('statsWave').innerText = `Wave ${gameState.currentWave}`;
+            document.getElementById('statsScore').innerText = gameState.highScore;
+
+            let rank = 'Recruit Pilot';
+            if (gameState.highScore > 75000) rank = 'Universal Vanguard';
+            else if (gameState.highScore > 40000) rank = 'Cosmic Overlord';
+            else if (gameState.highScore > 20000) rank = 'Star Commander';
+            else if (gameState.highScore > 8000) rank = 'Squadron Leader';
+            else if (gameState.highScore > 2000) rank = 'Fleet Sentinel';
+            document.getElementById('statsPilot').innerText = rank;
+        }
+
+        // Workshop Mechanics (Using programmatic event bindings)
+        function openWorkshop() {
+            document.getElementById('workshopCoins').innerHTML = `<i class="fa-solid fa-coins mr-1.5"></i>${gameState.coins}`;
+            const container = document.getElementById('upgradesContainer');
+            container.innerHTML = '';
+
+            Object.keys(UPGRADE_SPECS).forEach(key => {
+                const spec = UPGRADE_SPECS[key];
+                const currentLevel = gameState.upgrades[key] || 1;
+                const maxed = currentLevel >= spec.maxLevel;
+                const cost = maxed ? 0 : Math.round(spec.basePrice * Math.pow(spec.priceMult, currentLevel - 1));
+
+                const item = document.createElement('div');
+                item.className = `bg-slate-900/80 border p-4 rounded-2xl flex items-center justify-between hover:border-cyan-500/30 transition duration-150 ${key === 'laserPorts' ? 'border-amber-500/30 bg-amber-950/5' : 'border-slate-800'}`;
+                
+                const details = document.createElement('div');
+                details.className = "flex-1 pr-3";
+                details.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="heading-font font-bold text-sm md:text-base ${key === 'laserPorts' ? 'text-amber-400' : 'text-white'}">${spec.label}</span>
+                        <span class="text-[10px] ${key === 'laserPorts' ? 'bg-amber-950/60 text-amber-300 border-amber-800/30' : 'bg-cyan-950/60 text-cyan-400 border-cyan-800/30'} px-2.5 py-0.5 rounded-full border">
+                            Lvl ${currentLevel}/${spec.maxLevel}
+                        </span>
+                        ${key === 'laserPorts' ? '<span class="text-[9px] bg-red-950 text-red-400 px-1.5 py-0.2 rounded font-bold">LEGENDARY</span>' : ''}
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1">${spec.desc}</p>
+                `;
+                item.appendChild(details);
+
+                const actionDiv = document.createElement('div');
+                if (maxed) {
+                    actionDiv.innerHTML = `<span class="text-emerald-400 font-bold text-xs uppercase bg-emerald-950/30 px-3 py-1.5 rounded-xl border border-emerald-800/20">MAXIMUM</span>`;
+                } else {
+                    const upgradeBtn = document.createElement('button');
+                    upgradeBtn.className = `heading-font px-4 py-2 rounded-xl text-xs transition duration-150 font-bold flex items-center gap-1.5 ${key === 'laserPorts' ? 'bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-black border border-amber-500/40' : 'bg-cyan-600/10 hover:bg-cyan-600 text-cyan-400 hover:text-white border border-cyan-500/30'}`;
+                    upgradeBtn.innerHTML = `<span>${cost}</span> <i class="fa-solid fa-coins text-amber-400"></i>`;
+                    upgradeBtn.addEventListener('click', () => {
+                        purchaseUpgrade(key, cost);
+                    });
+                    actionDiv.appendChild(upgradeBtn);
+                }
+                item.appendChild(actionDiv);
+                container.appendChild(item);
+            });
+
+            document.getElementById('workshopModal').classList.remove('hidden');
+        }
+
+        function purchaseUpgrade(key, cost) {
+            if (gameState.coins >= cost) {
+                gameState.coins -= cost;
+                gameState.upgrades[key] = (gameState.upgrades[key] || 1) + 1;
+                SFX.playPowerup();
+                saveGameData();
+                openWorkshop();
+                updateMenuUI();
+            } else {
+                SFX.playHit();
+            }
+        }
+
+        function closeWorkshop() {
+            document.getElementById('workshopModal').classList.add('hidden');
+        }
+
+        // Hangar Mechanics
+        function openGarage() {
+            document.getElementById('garageCoins').innerHTML = `<i class="fa-solid fa-coins mr-1.5"></i>${gameState.coins}`;
+            const container = document.getElementById('shipsContainer');
+            container.innerHTML = '';
+
+            Object.keys(SHIP_TEMPLATES).forEach(id => {
+                const ship = SHIP_TEMPLATES[id];
+                const isOwned = gameState.unlockedShips.includes(id);
+                const isActive = gameState.activeShip === id;
+
+                const card = document.createElement('div');
+                let cardStyles = `bg-slate-900/90 border p-5 rounded-2xl flex flex-col justify-between transition relative `;
+                
+                if (isActive) {
+                    if (id === 'eclipse') {
+                        cardStyles += 'border-emerald-500 neon-border-emerald bg-gradient-to-b from-emerald-950/10 to-slate-900';
+                    } else if (id === 'valkyrie') {
+                        cardStyles += 'border-amber-500 neon-border-amber bg-gradient-to-b from-amber-950/10 to-slate-900';
+                    } else {
+                        cardStyles += 'border-purple-500 neon-border-purple bg-gradient-to-b from-purple-950/10 to-slate-900';
+                    }
+                } else {
+                    cardStyles += 'border-slate-800 hover:border-slate-700';
+                }
+                card.className = cardStyles;
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="heading-font font-black text-lg text-white block">${ship.name}</span>
+                            <span class="text-xl" style="color: ${ship.color}">
+                                <i class="fa-solid ${ship.icon}"></i>
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-4 h-12 overflow-hidden leading-snug">${ship.description}</p>
+                        
+                        <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400 mb-6 bg-black/60 p-3 rounded-xl border border-slate-800/40">
+                            <div>Plating Boost: <strong class="text-white">x${ship.hullMultiplier.toFixed(1)}</strong></div>
+                            <div>Deflectors Boost: <strong class="text-white">x${ship.shieldMultiplier.toFixed(1)}</strong></div>
+                            <div class="col-span-2">Weapon Configuration: <strong class="text-purple-400 uppercase">${ship.weaponType}</strong></div>
+                        </div>
+                    </div>
+                `;
+
+                const actionWrapper = document.createElement('div');
+                if (isActive) {
+                    actionWrapper.innerHTML = `
+                        <button class="w-full text-center text-xs py-2 bg-purple-500/20 text-purple-300 font-bold border border-purple-500/30 rounded-xl cursor-default">
+                            PILOT ENGAGED
+                        </button>
+                    `;
+                } else if (isOwned) {
+                    const selectBtn = document.createElement('button');
+                    selectBtn.className = "w-full py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-xs transition duration-150 transform active:scale-95";
+                    selectBtn.innerText = "ACTIVATE VESSEL";
+                    selectBtn.addEventListener('click', () => {
+                        selectShip(id);
+                    });
+                    actionWrapper.appendChild(selectBtn);
+                } else {
+                    const buyBtn = document.createElement('button');
+                    buyBtn.className = "w-full py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl text-xs transition duration-150 transform active:scale-95 flex items-center justify-center gap-2";
+                    buyBtn.innerHTML = `<span>Unlock Ship (${ship.price})</span> <i class="fa-solid fa-coins text-amber-400"></i>`;
+                    buyBtn.addEventListener('click', () => {
+                        buyShip(id, ship.price);
+                    });
+                    actionWrapper.appendChild(buyBtn);
+                }
+
+                card.appendChild(actionWrapper);
+                container.appendChild(card);
+            });
+
+            document.getElementById('garageModal').classList.remove('hidden');
+        }
+
+        function selectShip(id) {
+            if (gameState.unlockedShips.includes(id)) {
+                gameState.activeShip = id;
+                SFX.playPowerup();
+                saveGameData();
+                openGarage();
+                updateMenuUI();
+            }
+        }
+
+        function buyShip(id, price) {
+            if (gameState.coins >= price && !gameState.unlockedShips.includes(id)) {
+                gameState.coins -= price;
+                gameState.unlockedShips.push(id);
+                gameState.activeShip = id;
+                SFX.playPowerup();
+                saveGameData();
+                openGarage();
+                updateMenuUI();
+            } else {
+                SFX.playHit();
+            }
+        }
+
+        function closeGarage() {
+            document.getElementById('garageModal').classList.add('hidden');
+        }
+
+        // Unique Pilot Callsign Registration Engine
+        async function syncPilotCallsign() {
+            const rawId = document.getElementById('pilotIdInput').value.trim();
+            if (!rawId) {
+                SFX.playHit();
+                return;
+            }
+            activePilotId = rawId;
+            localStorage.setItem('vanguard_pilot_callsign', activePilotId);
+            SFX.playPowerup();
+            await loadCloudData();
+        }
+
+        // Canvas Game Engine - Playfield Layout
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            const container = document.getElementById('gameContainer');
+            if (container) {
+                canvas.width = container.clientWidth;
+                canvas.height = container.clientHeight;
+            }
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        // Input Systems
+        const keys = {};
+        window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
+        window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+        let touchX = null;
+        let touchY = null;
+        let activePointer = false;
+
+        canvas.addEventListener('mousedown', e => { activePointer = true; updatePointerPos(e); });
+        canvas.addEventListener('mousemove', e => { if (activePointer) updatePointerPos(e); });
+        window.addEventListener('mouseup', () => activePointer = false);
+
+        canvas.addEventListener('touchstart', e => {
+            activePointer = true;
+            updatePointerPos(e.touches[0]);
+        }, { passive: true });
+
+        canvas.addEventListener('touchmove', e => {
+            if (activePointer) updatePointerPos(e.touches[0]);
+        }, { passive: true });
+
+        canvas.addEventListener('touchend', () => activePointer = false);
+
+        function updatePointerPos(loc) {
+            const rect = canvas.getBoundingClientRect();
+            touchX = loc.clientX - rect.left;
+            touchY = loc.clientY - rect.top;
+        }
+
+        // Entities Classes
+        class BackgroundStar {
+            constructor() {
+                this.reset(true);
+            }
+            reset(anywhere = false) {
+                this.x = Math.random() * canvas.width;
+                this.y = anywhere ? Math.random() * canvas.height : -20;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speed = Math.random() * 1.5 + 0.6;
+                this.color = `rgba(186, 230, 253, ${Math.random() * 0.4 + 0.2})`;
+            }
+            update() {
+                this.y += this.speed;
+                if (this.y > canvas.height) this.reset(false);
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class StarfieldDust {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 30 + 15;
+                this.color = `rgba(139, 92, 246, 0.03)`;
+                this.speed = Math.random() * 0.2 + 0.05;
+            }
+            update() {
+                this.y += this.speed;
+                if (this.y - this.size > canvas.height) {
+                    this.y = -this.size;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Physically collectible dropped Nano-Credits
+        class PhysicalCredit {
+            constructor(x, y, value) {
+                this.x = x;
+                this.y = y;
+                this.value = value;
+                this.size = 6;
+                this.vy = Math.random() * 0.8 + 0.5;
+                this.vx = Math.random() * 1.2 - 0.6;
+                this.angle = Math.random() * Math.PI * 2;
+                this.rotSpeed = Math.random() * 0.05 + 0.03;
+                this.active = true;
+            }
+            update(player, magnetLvl) {
+                // Implement credit magnet pull physics
+                const pullRadius = 90 + (magnetLvl * 50); // Expanding pull radius based on harvester upgrade
+                const dx = player.x - this.x;
+                const dy = player.y - this.y;
+                const distance = Math.hypot(dx, dy);
+
+                if (distance < pullRadius) {
+                    // Accelerate credit coin towards the player
+                    const force = (pullRadius - distance) / pullRadius;
+                    const pullSpeed = 4.5 + (magnetLvl * 1.2);
+                    this.vx += (dx / distance) * force * pullSpeed * 0.15;
+                    this.vy += (dy / distance) * force * pullSpeed * 0.15;
+                    
+                    // Cap max velocity
+                    const speed = Math.hypot(this.vx, this.vy);
+                    if (speed > 8) {
+                        this.vx = (this.vx / speed) * 8;
+                        this.vy = (this.vy / speed) * 8;
+                    }
+                } else {
+                    // Standard drift slowing
+                    this.vx *= 0.98;
+                }
+
+                this.x += this.vx;
+                this.y += this.vy;
+                this.angle += this.rotSpeed;
+
+                // Border checks
+                if (this.y > canvas.height + 20) {
+                    this.active = false;
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                
+                // Outer gold neon flare
+                ctx.shadowColor = '#fbbf24';
+                ctx.shadowBlur = 8;
+                ctx.fillStyle = '#f59e0b';
+                
+                // Draw 3D rotating star gem design
+                ctx.beginPath();
+                ctx.moveTo(0, -this.size);
+                ctx.lineTo(this.size * 0.6, -this.size * 0.3);
+                ctx.lineTo(this.size, 0);
+                ctx.lineTo(this.size * 0.6, this.size * 0.3);
+                ctx.lineTo(0, this.size);
+                ctx.lineTo(-this.size * 0.6, this.size * 0.3);
+                ctx.lineTo(-this.size, 0);
+                ctx.lineTo(-this.size * 0.6, -this.size * 0.3);
+                ctx.closePath();
+                ctx.fill();
+
+                // Inner bright sparkle core
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(0, 0, this.size * 0.4, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
+        class Bullet {
+            constructor(x, y, vx, vy, isEnemy, size, color, dmg) {
+                this.x = x;
+                this.y = y;
+                this.vx = vx;
+                this.vy = vy;
+                this.isEnemy = isEnemy;
+                this.size = size;
+                this.color = color;
+                this.dmg = dmg;
+                this.active = true;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.y < -20 || this.y > canvas.height + 20 || this.x < -20 || this.x > canvas.width + 20) {
+                    this.active = false;
+                }
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 10;
+                ctx.beginPath();
+                if (this.isEnemy) {
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                } else {
+                    ctx.fillRect(this.x - this.size / 2, this.y - this.size * 2, this.size, this.size * 4);
+                }
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        class Enemy {
+            constructor(wave) {
+                this.x = Math.random() * (canvas.width - 60) + 30;
+                this.y = -40;
+                this.wave = wave;
+                
+                this.isSpecial = Math.random() < 0.20;
+                this.specialType = Math.random() < 0.5 ? 'multi' : 'shield';
+
+                const multiplier = 1 + (this.wave - 1) * 0.22;
+                this.maxHealth = Math.round((this.isSpecial ? 26 : 11) * multiplier);
+                this.health = this.maxHealth;
+
+                this.speed = Math.random() * 1.3 + 1.1;
+                this.vx = Math.random() * 1.6 - 0.8;
+
+                this.size = this.isSpecial ? 16 : 12;
+                this.fireCooldown = Math.random() * 1800 + 1200;
+                this.lastFired = Date.now();
+                
+                this.active = true;
+            }
+            update() {
+                this.y += this.speed;
+                this.x += this.vx;
+                
+                if (this.x < 20 || this.x > canvas.width - 20) {
+                    this.vx *= -1;
+                }
+
+                if (this.y > canvas.height + 50) {
+                    this.active = false;
+                }
+
+                if (Date.now() - this.lastFired > this.fireCooldown) {
+                    this.fire();
+                    this.lastFired = Date.now() + Math.random() * 800;
+                }
+            }
+            fire() {
+                if (this.y < 0) return;
+                gameSession.bullets.push(new Bullet(
+                    this.x, 
+                    this.y + 10, 
+                    0, 
+                    4.2, 
+                    true, 
+                    3.5, 
+                    '#f43f5e', 
+                    10 + Math.min(25, this.wave * 1.6)
+                ));
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+
+                if (this.isSpecial) {
+                    ctx.shadowColor = this.specialType === 'multi' ? '#f59e0b' : '#06b6d4';
+                    ctx.shadowBlur = 12;
+                    ctx.fillStyle = this.specialType === 'multi' ? '#fbbf24' : '#22d3ee';
+                } else {
+                    ctx.fillStyle = '#f43f5e';
+                }
+
+                // Vector clean alien design
+                ctx.beginPath();
+                ctx.moveTo(0, 12);
+                ctx.lineTo(-this.size, -this.size);
+                ctx.lineTo(-this.size * 0.4, -this.size * 0.2);
+                ctx.lineTo(0, -this.size * 0.8);
+                ctx.lineTo(this.size * 0.4, -this.size * 0.2);
+                ctx.lineTo(this.size, -this.size);
+                ctx.closePath();
+                ctx.fill();
+
+                // Small lights
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(-3, -1, 1.5, 0, Math.PI*2);
+                ctx.arc(3, -1, 1.5, 0, Math.PI*2);
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
+        class Boss {
+            constructor(wave) {
+                this.wave = wave;
+                this.x = canvas.width / 2;
+                this.y = -100;
+                this.size = 52;
+                
+                const hpScale = 1 + (wave - 1) * 0.38;
+                this.maxHealth = Math.round(520 * hpScale);
+                this.health = this.maxHealth;
+                
+                this.speed = 1.0;
+                this.direction = 1;
+                this.fireCooldown = 1600 - Math.min(800, wave * 85);
+                this.lastFired = Date.now();
+                this.targetY = 125;
+                
+                this.isIntroduced = false;
+                this.active = true;
+            }
+            update() {
+                if (this.y < this.targetY) {
+                    this.y += 2.0;
+                    return;
+                }
+
+                if (!this.isIntroduced) {
+                    this.isIntroduced = true;
+                    SFX.playSiren();
+                }
+
+                this.x += this.speed * this.direction;
+                if (this.x < 55 || this.x > canvas.width - 55) {
+                    this.direction *= -1;
+                    this.x += this.speed * this.direction;
+                }
+
+                if (Date.now() - this.lastFired > this.fireCooldown) {
+                    this.firePattern();
+                    this.lastFired = Date.now();
+                }
+            }
+            firePattern() {
+                SFX.playHit();
+                const r = Math.random();
+                if (r < 0.4) {
+                    // Spread laser fire
+                    for (let angle = -0.35; angle <= 0.35; angle += 0.17) {
+                        gameSession.bullets.push(new Bullet(
+                            this.x, 
+                            this.y + 35, 
+                            angle * 5.5, 
+                            4.2, 
+                            true, 
+                            5.5, 
+                            '#f59e0b', 
+                            16
+                        ));
+                    }
+                } else if (r < 0.75) {
+                    // Twin heavy strikes
+                    gameSession.bullets.push(new Bullet(this.x - 28, this.y + 12, -0.4, 4.8, true, 7.5, '#ec4899', 20));
+                    gameSession.bullets.push(new Bullet(this.x + 28, this.y + 12, 0.4, 4.8, true, 7.5, '#ec4899', 20));
+                } else {
+                    // Tracking burst shot
+                    const dx = gameSession.player.x - this.x;
+                    const dy = gameSession.player.y - this.y;
+                    const len = Math.sqrt(dx*dx + dy*dy) || 1;
+                    gameSession.bullets.push(new Bullet(
+                        this.x, 
+                        this.y + 25, 
+                        (dx / len) * 5.8, 
+                        (dy / len) * 5.8, 
+                        true, 
+                        6.5, 
+                        '#ef4444', 
+                        25
+                    ));
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+
+                ctx.shadowColor = '#dc2626';
+                ctx.shadowBlur = 18;
+
+                ctx.fillStyle = '#111029';
+                ctx.strokeStyle = '#f43f5e';
+                ctx.lineWidth = 2.5;
+
+                ctx.beginPath();
+                ctx.moveTo(0, 42);
+                ctx.lineTo(-this.size, 8);
+                ctx.lineTo(-this.size * 0.7, -this.size * 0.4);
+                ctx.lineTo(-15, -this.size * 0.6);
+                ctx.lineTo(0, -this.size * 0.35);
+                ctx.lineTo(15, -this.size * 0.6);
+                ctx.lineTo(this.size * 0.7, -this.size * 0.4);
+                ctx.lineTo(this.size, 8);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // Core engine pulse
+                const pulse = Math.sin(Date.now() / 150) * 6 + 10;
+                ctx.fillStyle = '#ef4444';
+                ctx.beginPath();
+                ctx.arc(0, 5, pulse, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.vx = Math.random() * 5 - 2.5;
+                this.vy = Math.random() * 5 - 2.5;
+                this.size = Math.random() * 3 + 1;
+                this.alpha = 1.0;
+                this.decay = Math.random() * 0.05 + 0.02;
+                this.active = true;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
+                if (this.alpha <= 0) this.active = false;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        class FloatingText {
+            constructor(x, y, text, color) {
+                this.x = x;
+                this.y = y;
+                this.text = text;
+                this.color = color;
+                this.vy = -1.1;
+                this.alpha = 1.0;
+                this.active = true;
+            }
+            update() {
+                this.y += this.vy;
+                this.alpha -= 0.028;
+                if (this.alpha <= 0) this.active = false;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.font = '700 14px Rajdhani';
+                ctx.textAlign = 'center';
+                ctx.fillText(this.text, this.x, this.y);
+                ctx.restore();
+            }
+        }
+
+        class PlayerShipEntity {
+            constructor() {
+                this.x = canvas.width / 2;
+                this.y = canvas.height - 90;
+                this.size = 19;
+                this.baseSpeed = 4.8;
+
+                const t = SHIP_TEMPLATES[gameState.activeShip] || SHIP_TEMPLATES.standard;
+                this.color = t.color;
+                this.exhaustColor = t.exhaustColor;
+                this.weaponSetup = t.weaponType;
+
+                const hpUpgradesLvl = gameState.upgrades.healthCapacity || 1;
+                this.maxHealth = Math.round(100 * t.hullMultiplier * (1 + (hpUpgradesLvl - 1) * 0.2));
+                this.health = this.maxHealth;
+
+                const shieldUpgradesLvl = gameState.upgrades.shieldCapacity || 1;
+                this.maxShield = Math.round(50 * t.shieldMultiplier * (1 + (shieldUpgradesLvl - 1) * 0.25));
+                this.shield = this.maxShield;
+
+                this.lastShot = 0;
+                this.lastDamageTaken = 0;
+            }
+            update() {
+                const now = Date.now();
+                let inputActive = false;
+                let moveDirX = 0;
+                let moveDirY = 0;
+
+                if (keys['a'] || keys['arrowleft']) { moveDirX = -1; inputActive = true; }
+                if (keys['d'] || keys['arrowright']) { moveDirX = 1; inputActive = true; }
+                if (keys['w'] || keys['arrowup']) { moveDirY = -1; inputActive = true; }
+                if (keys['s'] || keys['arrowdown']) { moveDirY = 1; inputActive = true; }
+
+                if (inputActive) {
+                    this.x += moveDirX * this.baseSpeed;
+                    this.y += moveDirY * this.baseSpeed;
+                } else if (activePointer && touchX !== null) {
+                    const dx = touchX - this.x;
+                    const dy = (touchY - 40) - this.y;
+                    this.x += dx * 0.22;
+                    this.y += dy * 0.22;
+                }
+
+                this.x = Math.max(this.size, Math.min(canvas.width - this.size, this.x));
+                this.y = Math.max(this.size + 40, Math.min(canvas.height - this.size - 20, this.y));
+
+                // Deflector recovery phase (Plasma Rechargers upgrade boosts passive shield recovery times)
+                const rechargeLvl = gameState.upgrades.shieldRecharge || 1;
+                const recoveryDelay = Math.max(1200, 3500 - (rechargeLvl * 450));
+                
+                if (now - this.lastDamageTaken > recoveryDelay) {
+                    if (this.shield < this.maxShield) {
+                        this.shield += 0.25 + (rechargeLvl * 0.08);
+                        if (this.shield > this.maxShield) this.shield = this.maxShield;
+                    }
+                }
+
+                // Fire Rate trigger
+                const delayUpgrade = gameState.upgrades.laserSpeed || 1;
+                const rateMod = gameSession.activePowerups.multi > 0 ? 0.55 : 1.0;
+                const firingDelay = Math.max(130, (330 - (delayUpgrade - 1) * 40) * rateMod);
+
+                if (now - this.lastShot > firingDelay) {
+                    this.fire();
+                    this.lastShot = now;
+                }
+            }
+            fire() {
+                SFX.playLaser();
+                const laserSizeLvl = gameState.upgrades.laserSize || 1;
+                const bSize = 3.2 + (laserSizeLvl - 1) * 0.7;
+                
+                const laserDmgLvl = gameState.upgrades.laserDamage || 1;
+                const baseDmg = 10 + (laserDmgLvl - 1) * 4;
+
+                const isMultiEnabled = gameSession.activePowerups.multi > 0;
+                
+                // Quantum emission outlets panel upgrade calculation (laserPorts)
+                const panelLvl = gameState.upgrades.laserPorts || 1;
+
+                // Firing sequence combines Ship weapon specs + Emission Outlets Upgrade
+                if (panelLvl >= 4 || this.weaponSetup === 'quadshoot') {
+                    // Maximum Quantum Emitter Grid Pattern (8 Outlets panel sequence)
+                    const beamColor = (gameState.activeShip === 'eclipse') ? '#10b981' : '#22d3ee';
+                    gameSession.bullets.push(new Bullet(this.x, this.y - 14, 0, -10.5, false, bSize + 1.2, beamColor, baseDmg * 1.3));
+                    gameSession.bullets.push(new Bullet(this.x - 10, this.y, -1.5, -9.8, false, bSize, beamColor, baseDmg));
+                    gameSession.bullets.push(new Bullet(this.x + 10, this.y, 1.5, -9.8, false, bSize, beamColor, baseDmg));
+                    gameSession.bullets.push(new Bullet(this.x - 22, this.y + 4, -3.2, -9.0, false, bSize, beamColor, baseDmg));
+                    gameSession.bullets.push(new Bullet(this.x + 22, this.y + 4, 3.2, -9.0, false, bSize, beamColor, baseDmg));
+                    gameSession.bullets.push(new Bullet(this.x - 32, this.y + 8, -5.0, -8.0, false, bSize - 0.5, beamColor, baseDmg * 0.8));
+                    gameSession.bullets.push(new Bullet(this.x + 32, this.y + 8, 5.0, -8.0, false, bSize - 0.5, beamColor, baseDmg * 0.8));
+                } else if (panelLvl === 3 || this.weaponSetup === 'trishoot') {
+                    // Triple Spread laser arrays with flanking ports
+                    gameSession.bullets.push(new Bullet(this.x, this.y - 12, 0, -9.0, false, bSize, '#a855f7', baseDmg));
+                    gameSession.bullets.push(new Bullet(this.x - 12, this.y, -2.0, -8.5, false, bSize, '#a855f7', baseDmg));
+                    gameSession.bullets.push(new Bullet(this.x + 12, this.y, 2.0, -8.5, false, bSize, '#a855f7', baseDmg));
+                    gameSession.bullets.push(new Bullet(this.x - 24, this.y + 4, -4.0, -7.8, false, bSize - 0.5, '#c084fc', baseDmg * 0.8));
+                    gameSession.bullets.push(new Bullet(this.x + 24, this.y + 4, 4.0, -7.8, false, bSize - 0.5, '#c084fc', baseDmg * 0.8));
+                } else if (panelLvl === 2 || this.weaponSetup === 'dual-spread' || this.weaponSetup === 'dual') {
+                    // Flanking twin parallel emitter grids
+                    const color = (this.color === '#f59e0b') ? '#f59e0b' : '#34d399';
+                    gameSession.bullets.push(new Bullet(this.x - 12, this.y - 2, -1.0, -9.0, false, bSize, color, baseDmg));
+                    gameSession.bullets.push(new Bullet(this.x + 12, this.y - 2, 1.0, -9.0, false, bSize, color, baseDmg));
+                    gameSession.bullets.push(new Bullet(this.x, this.y - 14, 0, -10.0, false, bSize + 0.6, '#ffffff', baseDmg * 1.1));
+                } else {
+                    // Standard Core Outlet
+                    gameSession.bullets.push(new Bullet(this.x, this.y - 12, 0, -8.5, false, bSize, this.color, baseDmg));
+                }
+            }
+            hit(dmg) {
+                this.lastDamageTaken = Date.now();
+                SFX.playHit();
+
+                if (this.shield > 0) {
+                    this.shield -= dmg;
+                    if (this.shield < 0) {
+                        const excess = Math.abs(this.shield);
+                        this.shield = 0;
+                        this.health -= excess;
+                    }
+                } else {
+                    this.health -= dmg;
+                }
+
+                for (let i = 0; i < 6; i++) {
+                    gameSession.particles.push(new Particle(this.x, this.y, '#f43f5e'));
+                }
+
+                if (this.health <= 0) {
+                    this.health = 0;
+                    this.destroy();
+                }
+            }
+            destroy() {
+                SFX.playExplode();
+                for (let i = 0; i < 30; i++) {
+                    gameSession.particles.push(new Particle(this.x, this.y, '#f59e0b'));
+                }
+                gameSession.gameOver = true;
+                handleGameOver();
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+
+                // Engine glow trail
+                const exhaustSize = Math.sin(Date.now() / 50) * 5 + 12;
+                ctx.fillStyle = this.exhaustColor;
+                ctx.shadowColor = this.exhaustColor;
+                ctx.shadowBlur = 10;
+                ctx.beginPath();
+                ctx.ellipse(0, this.size - 2, 5, exhaustSize, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw Ship Hull
+                ctx.fillStyle = '#0a0a16';
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = 2.2;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 6;
+
+                // Draw Custom chassis structures based on Model selected
+                ctx.beginPath();
+                ctx.moveTo(0, -this.size);
+                
+                if (gameState.activeShip === 'eclipse') {
+                    // Heavy armor block design
+                    ctx.lineTo(-this.size * 1.2, this.size * 0.2);
+                    ctx.lineTo(-this.size * 0.8, this.size * 0.9);
+                    ctx.lineTo(0, this.size * 0.6);
+                    ctx.lineTo(this.size * 0.8, this.size * 0.9);
+                    ctx.lineTo(this.size * 1.2, this.size * 0.2);
+                } else if (gameState.activeShip === 'valkyrie') {
+                    // Swept forward wing dynamic structure
+                    ctx.lineTo(-this.size * 1.1, -this.size * 0.2);
+                    ctx.lineTo(-this.size * 0.5, this.size * 0.6);
+                    ctx.lineTo(0, this.size * 0.4);
+                    ctx.lineTo(this.size * 0.5, this.size * 0.6);
+                    ctx.lineTo(this.size * 1.1, -this.size * 0.2);
+                } else {
+                    // Standard wings
+                    ctx.lineTo(-this.size, this.size * 0.75);
+                    ctx.lineTo(-this.size * 0.3, this.size * 0.3);
+                    ctx.lineTo(0, this.size * 0.5);
+                    ctx.lineTo(this.size * 0.3, this.size * 0.3);
+                    ctx.lineTo(this.size, this.size * 0.75);
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // Visualized Side-Outlet Panels if Quantum Emission Outlets are installed
+                const panelLvl = gameState.upgrades.laserPorts || 1;
+                if (panelLvl > 1) {
+                    ctx.fillStyle = this.color;
+                    ctx.shadowColor = this.color;
+                    ctx.shadowBlur = 4;
+                    // Left laser port panel
+                    ctx.fillRect(-this.size - 3, this.size * 0.2, 3, 8);
+                    // Right laser port panel
+                    ctx.fillRect(this.size, this.size * 0.2, 3, 8);
+                }
+
+                // Shield Core pulse sphere
+                if (this.shield > 0) {
+                    const alpha = Math.max(0.08, (this.shield / this.maxShield) * 0.22);
+                    ctx.strokeStyle = `rgba(34, 211, 238, ${alpha})`;
+                    ctx.fillStyle = `rgba(34, 211, 238, 0.02)`;
+                    ctx.beginPath();
+                    ctx.arc(0, -1, this.size * 1.45, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                }
+
+                ctx.restore();
+            }
+        }
+
+        let gameSession = {
+            player: null,
+            bullets: [],
+            enemies: [],
+            boss: null,
+            particles: [],
+            credits: [], // Spawned Physical Credit Objects
+            stars: [],
+            dust: [],
+            texts: [],
+            score: 0,
+            coinsCollected: 0,
+            activePowerups: {
+                multi: 0
+            },
+            waveInProgress: false,
+            enemySpawnTimer: 0,
+            totalEnemiesInWave: 0,
+            enemiesSpawned: 0,
+            isPaused: false,
+            gameOver: false,
+            animationFrameId: null
+        };
+
+        function initGameSession() {
+            gameSession.player = new PlayerShipEntity();
+            gameSession.bullets = [];
+            gameSession.enemies = [];
+            gameSession.boss = null;
+            gameSession.particles = [];
+            gameSession.credits = [];
+            gameSession.texts = [];
+            gameSession.score = 0;
+            gameSession.coinsCollected = 0;
+            gameSession.gameOver = false;
+            gameSession.isPaused = false;
+            gameSession.activePowerups = { multi: 0 };
+            
+            gameSession.stars = [];
+            for (let i = 0; i < 60; i++) gameSession.stars.push(new BackgroundStar());
+            gameSession.dust = [];
+            for (let i = 0; i < 5; i++) gameSession.dust.push(new StarfieldDust());
+
+            startWave(gameState.currentWave);
+        }
+
+        function startWave(waveNum) {
+            gameSession.waveInProgress = true;
+            gameSession.enemiesSpawned = 0;
+            gameSession.boss = null;
+            
+            const isBossWave = (waveNum % 2 !== 0);
+            
+            if (isBossWave) {
+                gameSession.totalEnemiesInWave = 0;
+                gameSession.boss = new Boss(waveNum);
+                document.getElementById('bossName').innerText = `MEGA INVADER: ZERO-${waveNum}`;
+                document.getElementById('bossHealthContainer').classList.remove('hidden');
+                SFX.playSiren();
+            } else {
+                gameSession.totalEnemiesInWave = 5 + (waveNum * 4);
+                document.getElementById('bossHealthContainer').classList.add('hidden');
+            }
+
+            gameSession.texts.push(new FloatingText(
+                canvas.width / 2, 
+                canvas.height / 2 - 80, 
+                `SECTOR ${waveNum}: ENGAGED`, 
+                '#22d3ee'
+            ));
+        }
+
+        function checkWaveProgress() {
+            if (!gameSession.waveInProgress) return;
+
+            if (!gameSession.boss) {
+                if (gameSession.enemiesSpawned >= gameSession.totalEnemiesInWave && gameSession.enemies.length === 0) {
+                    handleWaveClear();
+                }
+            } else {
+                if (!gameSession.boss.active) {
+                    gameSession.boss = null;
+                    document.getElementById('bossHealthContainer').classList.add('hidden');
+                    handleWaveClear();
+                }
+            }
+        }
+
+        function handleWaveClear() {
+            gameSession.waveInProgress = false;
+            
+            const bonus = 50 + (gameState.currentWave * 25);
+            gameState.coins += bonus;
+            gameSession.coinsCollected += bonus;
+            
+            gameState.currentWave++;
+            
+            SFX.playPowerup();
+            saveGameData();
+            
+            gameSession.texts.push(new FloatingText(canvas.width / 2, canvas.height / 2 - 40, "SECTOR SECURED", "#10b981"));
+            gameSession.texts.push(new FloatingText(canvas.width / 2, canvas.height / 2, `Bounty: +${bonus} Credits`, "#fbbf24"));
+
+            setTimeout(() => {
+                if (!gameSession.gameOver && !gameSession.isPaused) {
+                    startWave(gameState.currentWave);
+                }
+            }, 2200);
+        }
+
+        function checkCollisions() {
+            const player = gameSession.player;
+            const bullets = gameSession.bullets;
+            const enemies = gameSession.enemies;
+            const boss = gameSession.boss;
+            const credits = gameSession.credits;
+
+            // Physical dropped credits magnetic attraction & harvest collision logic
+            for (let i = credits.length - 1; i >= 0; i--) {
+                const c = credits[i];
+                const dist = Math.hypot(c.x - player.x, c.y - player.y);
+                if (dist < player.size + c.size) {
+                    // Harvest Nano-Credit success
+                    SFX.playCoin();
+                    gameState.coins += c.value;
+                    gameSession.coinsCollected += c.value;
+                    c.active = false;
+                    
+                    // Sparkle particles
+                    for (let p = 0; p < 4; p++) {
+                        gameSession.particles.push(new Particle(c.x, c.y, '#fbbf24'));
+                    }
+                    credits.splice(i, 1);
+                }
+            }
+
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                const b = bullets[i];
+                if (b.isEnemy) continue;
+
+                for (let j = enemies.length - 1; j >= 0; j--) {
+                    const e = enemies[j];
+                    const dist = Math.hypot(b.x - e.x, b.y - e.y);
+                    if (dist < e.size + b.size) {
+                        b.active = false;
+                        e.health -= b.dmg;
+                        
+                        for(let p=0; p<3; p++) gameSession.particles.push(new Particle(b.x, b.y, '#38bdf8'));
+
+                        if (e.health <= 0) {
+                            e.active = false;
+                            handleEnemyKill(e);
+                        }
+                        break;
+                    }
+                }
+
+                if (boss && b.active) {
+                    const dist = Math.hypot(b.x - boss.x, b.y - boss.y);
+                    if (dist < boss.size + b.size) {
+                        b.active = false;
+                        boss.health -= b.dmg;
+                        
+                        const percent = (boss.health / boss.maxHealth) * 100;
+                        document.getElementById('bossHealthBar').style.width = `${Math.max(0, percent)}%`;
+                        document.getElementById('bossHealthText').innerText = `${Math.max(0, boss.health)} / ${boss.maxHealth}`;
+
+                        for(let p=0; p<4; p++) gameSession.particles.push(new Particle(b.x, b.y, '#fbbf24'));
+
+                        if (boss.health <= 0) {
+                            boss.active = false;
+                            handleBossKill(boss);
+                        }
+                    }
+                }
+            }
+
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                const b = bullets[i];
+                if (!b.isEnemy) continue;
+
+                const dist = Math.hypot(b.x - player.x, b.y - player.y);
+                if (dist < player.size + b.size) {
+                    b.active = false;
+                    player.hit(b.dmg);
+                }
+            }
+
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                const e = enemies[i];
+                const dist = Math.hypot(e.x - player.x, e.y - player.y);
+                if (dist < player.size + e.size) {
+                    e.active = false;
+                    player.hit(30);
+                    
+                    SFX.playExplode();
+                    for(let p=0; p<12; p++) gameSession.particles.push(new Particle(e.x, e.y, '#ef4444'));
+                }
+            }
+        }
+
+        function handleEnemyKill(enemy) {
+            SFX.playExplode();
+            
+            const pts = enemy.isSpecial ? 220 : 90;
+            gameSession.score += pts;
+            
+            // Instantly spawn physical rotating credits instead of silent automatic calculation
+            const dropCount = enemy.isSpecial ? 6 : Math.floor(Math.random() * 2) + 1;
+            const singleVal = enemy.isSpecial ? 3 : 2;
+            
+            for (let k = 0; k < dropCount; k++) {
+                gameSession.credits.push(new PhysicalCredit(
+                    enemy.x + (Math.random() * 20 - 10),
+                    enemy.y + (Math.random() * 20 - 10),
+                    singleVal
+                ));
+            }
+
+            gameSession.texts.push(new FloatingText(enemy.x, enemy.y, `+${pts}`, '#10b981'));
+
+            if (enemy.isSpecial) {
+                SFX.playPowerup();
+                const type = enemy.specialType;
+                if (type === 'multi') {
+                    gameSession.activePowerups.multi = 6.0; // Boosted transfer fire pattern duration
+                    gameSession.texts.push(new FloatingText(canvas.width / 2, canvas.height / 2, "HYPER-CHARGE INJECTED!", "#f59e0b"));
+                } else if (type === 'shield') {
+                    gameSession.player.shield = gameSession.player.maxShield;
+                    gameSession.texts.push(new FloatingText(canvas.width / 2, canvas.height / 2, "DEFLECTORS ENERGIZED!", "#22d3ee"));
+                }
+            }
+
+            for(let i=0; i<10; i++) {
+                gameSession.particles.push(new Particle(enemy.x, enemy.y, enemy.isSpecial ? '#fbbf24' : '#f43f5e'));
+            }
+        }
+
+        function handleBossKill(boss) {
+            SFX.playExplode();
+            
+            const scoreBounty = 2000 + (boss.wave * 450);
+            const coinBounty = 200 + (boss.wave * 50);
+            
+            gameSession.score += scoreBounty;
+            
+            // Drop a large shower of physically floating Nano-Credits
+            const coinDropsCount = 15;
+            const valuePerDrop = Math.ceil(coinBounty / coinDropsCount);
+            for (let k = 0; k < coinDropsCount; k++) {
+                gameSession.credits.push(new PhysicalCredit(
+                    boss.x + (Math.random() * 40 - 20),
+                    boss.y + (Math.random() * 40 - 20),
+                    valuePerDrop
+                ));
+            }
+
+            gameSession.texts.push(new FloatingText(boss.x, boss.y, `+${scoreBounty} pts`, '#10b981'));
+
+            for(let i=0; i<40; i++) {
+                gameSession.particles.push(new Particle(
+                    boss.x + (Math.random() * 50 - 25), 
+                    boss.y + (Math.random() * 50 - 25), 
+                    '#fbbf24'
+                ));
+            }
+        }
+
+        // Render Clean Playground
+        function drawTacticalGrid() {
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
+            ctx.lineWidth = 1.0;
+            const gridSize = 40;
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+        }
+
+        function gameLoop() {
+            if (gameSession.isPaused || gameSession.gameOver) return;
+
+            ctx.fillStyle = '#02000c';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            drawTacticalGrid();
+
+            gameSession.dust.forEach(d => { d.update(); d.draw(); });
+            gameSession.stars.forEach(s => { s.update(); s.draw(); });
+
+            if (!gameSession.boss && gameSession.waveInProgress && gameSession.enemiesSpawned < gameSession.totalEnemiesInWave) {
+                if (Date.now() - gameSession.enemySpawnTimer > 1500) {
+                    gameSession.enemies.push(new Enemy(gameState.currentWave));
+                    gameSession.enemiesSpawned++;
+                    gameSession.enemySpawnTimer = Date.now();
+                }
+            }
+
+            const deltaTime = 1 / 60;
+            if (gameSession.activePowerups.multi > 0) {
+                gameSession.activePowerups.multi -= deltaTime;
+            }
+            updatePowerupsHUD();
+
+            gameSession.player.update();
+            gameSession.player.draw();
+
+            if (gameSession.boss) {
+                gameSession.boss.update();
+                gameSession.boss.draw();
+            }
+
+            // Update physical credits
+            const magnetLvl = gameState.upgrades.magnetStrength || 1;
+            for (let i = gameSession.credits.length - 1; i >= 0; i--) {
+                const c = gameSession.credits[i];
+                c.update(gameSession.player, magnetLvl);
+                if (c.active) c.draw();
+                else gameSession.credits.splice(i, 1);
+            }
+
+            for (let i = gameSession.bullets.length - 1; i >= 0; i--) {
+                const b = gameSession.bullets[i];
+                b.update();
+                if (b.active) b.draw();
+                else gameSession.bullets.splice(i, 1);
+            }
+
+            for (let i = gameSession.enemies.length - 1; i >= 0; i--) {
+                const e = gameSession.enemies[i];
+                e.update();
+                if (e.active) e.draw();
+                else gameSession.enemies.splice(i, 1);
+            }
+
+            for (let i = gameSession.particles.length - 1; i >= 0; i--) {
+                const p = gameSession.particles[i];
+                p.update();
+                if (p.active) p.draw();
+                else gameSession.particles.splice(i, 1);
+            }
+
+            for (let i = gameSession.texts.length - 1; i >= 0; i--) {
+                const t = gameSession.texts[i];
+                t.update();
+                if (t.active) t.draw();
+                else gameSession.texts.splice(i, 1);
+            }
+
+            checkCollisions();
+            checkWaveProgress();
+            updateHUD();
+
+            gameSession.animationFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        function updateHUD() {
+            document.getElementById('hudScore').innerText = gameSession.score;
+            document.getElementById('hudCoins').innerHTML = `<i class="fa-solid fa-coins mr-1 text-[10px]"></i>${gameState.coins}`;
+            document.getElementById('hudWave').innerText = `WAVE ${gameState.currentWave}`;
+
+            const player = gameSession.player;
+            if (player) {
+                const hPercent = (player.health / player.maxHealth) * 100;
+                document.getElementById('healthBar').style.width = `${Math.max(0, hPercent)}%`;
+                document.getElementById('healthText').innerText = `${Math.round(player.health)}/${player.maxHealth}`;
+
+                const sPercent = (player.shield / player.maxShield) * 100;
+                document.getElementById('shieldBar').style.width = `${Math.max(0, sPercent)}%`;
+                document.getElementById('shieldText').innerText = `${Math.round(player.shield)}/${player.maxShield}`;
+            }
+        }
+
+        function updatePowerupsHUD() {
+            const container = document.getElementById('powerupContainer');
+            container.innerHTML = '';
+
+            if (gameSession.activePowerups.multi > 0) {
+                const multiLeft = Math.ceil(gameSession.activePowerups.multi);
+                const el = document.createElement('div');
+                el.className = "flex items-center gap-2 bg-amber-500/90 border border-amber-400 px-3 py-1.5 rounded-xl text-xs text-black font-black heading-font animate-pulse";
+                el.innerHTML = `
+                    <i class="fa-solid fa-fire text-black"></i>
+                    <span>HYPER-FIRE (${multiLeft}s)</span>
+                `;
+                container.appendChild(el);
+            }
+        }
+
+        // Gameplay state controllers
+        function startGame() {
+            document.getElementById('mainMenu').classList.add('hidden');
+            document.getElementById('gameContainer').classList.remove('hidden');
+            
+            SFX.init();
+            resizeCanvas();
+            initGameSession();
+            
+            gameSession.animationFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        function togglePause() {
+            if (gameSession.gameOver) return;
+            gameSession.isPaused = !gameSession.isPaused;
+
+            const icon = document.getElementById('pauseIcon');
+            if (gameSession.isPaused) {
+                icon.className = "fa-solid fa-play";
+                cancelAnimationFrame(gameSession.animationFrameId);
+                
+                document.getElementById('overlayTitle').innerText = "TACTICAL BREAK";
+                document.getElementById('overlayTitle').className = "heading-font text-3xl font-black mb-4 tracking-widest text-cyan-400";
+                document.getElementById('overlayDesc').innerText = "Vessel engine and defensive arrays paused.";
+                document.getElementById('overlayScore').innerText = gameSession.score;
+                document.getElementById('overlayCoins').innerText = `+${gameSession.coinsCollected}`;
+                document.getElementById('overlayWave').innerText = `Wave ${gameState.currentWave}`;
+                document.getElementById('overlayPrimaryBtn').innerText = "RESUME MISSION";
+                document.getElementById('overlayPrimaryBtn').onclick = togglePause;
+                document.getElementById('gameOverlay').classList.remove('hidden');
+            } else {
+                icon.className = "fa-solid fa-pause";
+                document.getElementById('gameOverlay').classList.add('hidden');
+                document.getElementById('overlayPrimaryBtn').onclick = restartGame;
+                document.getElementById('overlayPrimaryBtn').innerText = "RE-DEPLOY TO AREA";
+                gameSession.animationFrameId = requestAnimationFrame(gameLoop);
+            }
+        }
+
+        function handleGameOver() {
+            cancelAnimationFrame(gameSession.animationFrameId);
+            
+            if (gameSession.score > gameState.highScore) {
+                gameState.highScore = gameSession.score;
+            }
+            saveGameData();
+            updateMenuUI();
+
+            document.getElementById('overlayTitle').innerText = "TACTICAL FAILURE";
+            document.getElementById('overlayTitle').className = "heading-font text-3xl font-black mb-4 tracking-widest text-red-500";
+            document.getElementById('overlayDesc').innerText = "Your vessel was neutralized by cosmic invaders.";
+            document.getElementById('overlayScore').innerText = gameSession.score;
+            document.getElementById('overlayCoins').innerText = `+${gameSession.coinsCollected}`;
+            document.getElementById('overlayWave').innerText = `Wave ${gameState.currentWave}`;
+            document.getElementById('gameOverlay').classList.remove('hidden');
+        }
+
+        function restartGame() {
+            document.getElementById('gameOverlay').classList.add('hidden');
+            initGameSession();
+            gameSession.animationFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        function exitToMenu() {
+            cancelAnimationFrame(gameSession.animationFrameId);
+            document.getElementById('gameOverlay').classList.add('hidden');
+            document.getElementById('gameContainer').classList.add('hidden');
+            document.getElementById('mainMenu').classList.remove('hidden');
+            updateMenuUI();
+        }
+
+        // Setup DOM event listeners programmatically (Resolving Hangar / Workshop Button block issues completely)
+        document.getElementById('launchBtn').addEventListener('click', startGame);
+        document.getElementById('workshopBtn').addEventListener('click', openWorkshop);
+        document.getElementById('hangarBtn').addEventListener('click', openGarage);
+        
+        document.getElementById('closeWorkshopBtn').addEventListener('click', closeWorkshop);
+        document.getElementById('confirmWorkshopBtn').addEventListener('click', closeWorkshop);
+        
+        document.getElementById('closeGarageBtn').addEventListener('click', closeGarage);
+        document.getElementById('confirmGarageBtn').addEventListener('click', closeGarage);
+        
+        document.getElementById('registerPilotBtn').addEventListener('click', syncPilotCallsign);
+        document.getElementById('pauseGameBtn').addEventListener('click', togglePause);
+        document.getElementById('overlayPrimaryBtn').addEventListener('click', restartGame);
+        document.getElementById('exitToMenuBtn').addEventListener('click', exitToMenu);
+    </script>
+</body>
+</html>
